@@ -12,6 +12,7 @@ tags:
   Environment: dev
   Owner: Platform
   CostCenter: "DEV"
+  Project: "modern-container-app"
 
 backend:
   bucket: svc-plus-iac-state
