@@ -20,7 +20,7 @@ env:
 
 jobs:
   terraform:
-    name: "${{ matrix.env }} :: pipeline (dry_run=${{ env.DRY_RUN }})"
+    name: "${{ matrix.env }} :: pipeline (dry_run=${{ inputs.dry_run }})"
     runs-on: ubuntu-latest
 
     strategy:
