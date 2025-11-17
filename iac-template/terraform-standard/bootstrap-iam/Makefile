@@ -13,7 +13,11 @@ apply: init
 		-var="terraform_user_name=$(terraform_user_name)"
 	terraform output
 plan: init
-	terraform plan -var="region=ap-northeast-1" -var="account_name=dev" -var="role_name=TerraformDeployRole-Dev"
+	terraform plan \
+		-var="account_name=$(account_name)" \
+		-var="region=$(region)" \
+		-var="role_name=$(role_name)" \
+		-var="terraform_user_name=$(terraform_user_name)"
 output: init
 	terraform output
 destroy: init
