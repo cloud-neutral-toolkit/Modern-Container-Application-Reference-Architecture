@@ -2,6 +2,7 @@
 
 This repository provides bootstrap Terraform modules that must be applied before enabling a Terraform remote backend on AWS.
 It creates:
+- IAM artifacts — a deploy role plus a dedicated DevOps/automation user for Terraform
 - S3 bucket — to store Terraform remote state
 - DynamoDB table — to store Terraform state locks
 
@@ -125,6 +126,12 @@ Server-side encryption ON
 To remove bootstrap resources:
 
 terraform destroy
+
+Resource names (bucket, DynamoDB table, IAM role/user) are defined in config/accounts/bootstrap.yaml. When tearing down the S3 backend, empty the configured bucket with AWS CLI first:
+
+```
+aws s3 rb "s3://$(python -c "import yaml;print(yaml.safe_load(open('config/accounts/bootstrap.yaml'))['state']['bucket_name'])")" --force
+```
 
 
 # Access Key + STS 的执行流程（内部机制）
