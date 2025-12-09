@@ -1,0 +1,57 @@
+name: Terraform Standard - Vultr Global LandingZone Baseline
+
+on:
+  push:
+    paths:
+      - 'iac-template/terraform-hcl-standard/vultr-vps/**'
+      - '.github/workflows/terraform-standard-iac-pipeline-vultr-global-landingzone-baseline.yaml'
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      deploy_action:
+        description: "Deployment action"
+        type: choice
+        options: [plan, apply, destroy]
+        default: plan
+
+env:
+  TF_WORKDIR: iac-template/terraform-hcl-standard/vultr-vps
+  DEPLOY_ACTION: ${{ github.event.inputs.deploy_action || 'plan' }}
+
+jobs:
+  landingzone:
+    name: "Deploy Vultr LandingZone Baseline"
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.5
+
+      - name: Export Vultr credentials
+        run: echo "TF_VAR_vultr_api_key=${{ secrets.VULTR_API_KEY }}" >> "$GITHUB_ENV"
+
+      - name: Terraform Init (LandingZone)
+        run: terraform -chdir=${{ env.TF_WORKDIR }}/envs/dev init -upgrade
+
+      - name: Terraform Plan (LandingZone)
+        if: env.DEPLOY_ACTION == 'plan'
+        run: terraform -chdir=${{ env.TF_WORKDIR }}/envs/dev plan -no-color > plan_output.txt
+
+      - name: Upload LandingZone Plan Artifact
+        if: env.DEPLOY_ACTION == 'plan'
+        uses: actions/upload-artifact@v4
+        with:
+          name: vultr-landingzone-plan
+          path: ${{ env.TF_WORKDIR }}/envs/dev/plan_output.txt
+
+      - name: Terraform Apply (LandingZone)
+        if: env.DEPLOY_ACTION == 'apply'
+        run: terraform -chdir=${{ env.TF_WORKDIR }}/envs/dev apply -auto-approve
+
+      - name: Terraform Destroy (LandingZone)
+        if: env.DEPLOY_ACTION == 'destroy'
+        run: terraform -chdir=${{ env.TF_WORKDIR }}/envs/dev destroy -auto-approve
