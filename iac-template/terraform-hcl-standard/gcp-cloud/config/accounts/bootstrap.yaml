@@ -1,8 +1,8 @@
-project_id: "modern-app-bootstrap"
+project_id: "xzerolab"
 environment: bootstrap
 
 state:
-  bucket_name: svc-plus-iac-state
+  bucket_name: svc-plus-gcp-iac-state
   bucket_location: US
   firestore_location: us-central
 
