@@ -1,4 +1,4 @@
-name: Terraform Standard - IAC Pipeline (Alicloud Resources Matrix)
+name: IAC Pipeline Alicloud Resources Matrix
 
 on:
   push:

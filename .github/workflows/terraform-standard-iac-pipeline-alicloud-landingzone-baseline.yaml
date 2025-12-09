@@ -1,4 +1,4 @@
-name: Terraform Standard - Alicloud Global LandingZone Baseline
+name: Alicloud LandingZone Baseline
 
 on:
   push:

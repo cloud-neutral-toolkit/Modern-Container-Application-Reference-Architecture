@@ -1,4 +1,4 @@
-name: Terraform Standard - GCP Project Bootstrap
+name: GCP Cloud Bootstrap
 
 concurrency:
   group: terraform-bootstrap-gcp-${{ github.ref }}

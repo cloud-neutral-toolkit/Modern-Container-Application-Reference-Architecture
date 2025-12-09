@@ -1,4 +1,4 @@
-name: Terraform Standard - IAC Pipeline (GCP Account/Project Matrix)
+name: IAC Pipeline GCP (Account/Project Matrix)
 
 on:
   push:

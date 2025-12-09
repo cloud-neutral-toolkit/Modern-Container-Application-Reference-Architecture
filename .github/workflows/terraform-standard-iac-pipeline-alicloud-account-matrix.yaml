@@ -1,4 +1,4 @@
-name: Terraform Standard - IAC Pipeline (Alicloud Account/VPC Matrix)
+name: IAC Pipeline Alicloud Account/VPC Matrix
 
 on:
   push:

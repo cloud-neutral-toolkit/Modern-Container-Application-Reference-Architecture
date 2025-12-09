@@ -1,4 +1,4 @@
-name: Terraform Standard - AWS Account Bootstrap
+name: AWS Cloud Account Bootstrap
 
 concurrency:
   group: terraform-bootstrap-${{ github.ref }}

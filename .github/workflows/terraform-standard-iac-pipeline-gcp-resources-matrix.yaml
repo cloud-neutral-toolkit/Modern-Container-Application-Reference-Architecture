@@ -1,4 +1,4 @@
-name: Terraform Standard - IAC Pipeline (GCP Resources Matrix)
+name: IAC Pipeline GCP Resources Matrix
 
 on:
   push:

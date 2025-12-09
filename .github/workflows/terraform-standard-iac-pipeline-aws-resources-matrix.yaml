@@ -1,4 +1,4 @@
-name: Terraform Standard - IAC Pipeline (Resources Matrix)
+name: IAC Pipeline AWS Cloud Resources Matrix
 
 on:
   push:

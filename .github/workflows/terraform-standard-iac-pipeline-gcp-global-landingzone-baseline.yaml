@@ -1,4 +1,4 @@
-name: Terraform Standard - GCP Global LandingZone Baseline
+name: GCP Cloud LandingZone Baseline
 
 on:
   push:

@@ -1,4 +1,4 @@
-name: Terraform Standard - AWS Global LandingZone Baseline
+name: AWS Cloud Global LandingZone Baseline
 
 on:
   push:

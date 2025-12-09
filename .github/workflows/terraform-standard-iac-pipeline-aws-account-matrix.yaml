@@ -1,4 +1,4 @@
-name: Terraform Standard - IAC Pipeline (Account/VPC Matrix)
+name: IAC Pipeline AWS Cloud (Account/VPC Matrix)
 
 on:
   push:

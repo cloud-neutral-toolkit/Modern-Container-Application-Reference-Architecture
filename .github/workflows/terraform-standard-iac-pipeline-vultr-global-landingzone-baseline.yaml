@@ -1,4 +1,4 @@
-name: Terraform Standard - Vultr Global LandingZone Baseline
+name: Vultr VPS LandingZone Baseline
 
 concurrency:
   group: terraform-vultr-landingzone-${{ github.ref }}

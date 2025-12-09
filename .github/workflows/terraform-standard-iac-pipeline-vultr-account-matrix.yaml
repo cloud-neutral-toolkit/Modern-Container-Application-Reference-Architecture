@@ -1,4 +1,4 @@
-name: Terraform Standard - IAC Pipeline (Vultr Account/VPC Matrix)
+name: IAC Pipeline Vultr VPS Account/VPC Matrix
 
 on:
   push:

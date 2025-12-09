@@ -1,4 +1,4 @@
-name: Terraform Standard - Vultr Global Bootstrap
+name: Vultr VPS Bootstrap
 
 concurrency:
   group: terraform-vultr-bootstrap-${{ github.ref }}

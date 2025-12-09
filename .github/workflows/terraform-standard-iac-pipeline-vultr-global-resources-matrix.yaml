@@ -1,4 +1,4 @@
-name: Terraform Standard - Vultr Global Resources Matrix
+name: Vultr VPS Resources Matrix
 
 concurrency:
   group: terraform-vultr-resources-${{ github.ref }}
