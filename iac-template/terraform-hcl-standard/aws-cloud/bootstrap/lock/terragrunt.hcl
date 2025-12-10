@@ -9,3 +9,7 @@ dependencies {
 terraform {
   source = "${get_parent_terragrunt_dir()}/..//bootstrap/lock"
 }
+
+inputs = {
+  bootstrap_config_path = abspath("${get_parent_terragrunt_dir()}/../config/accounts/bootstrap.yaml")
+}
