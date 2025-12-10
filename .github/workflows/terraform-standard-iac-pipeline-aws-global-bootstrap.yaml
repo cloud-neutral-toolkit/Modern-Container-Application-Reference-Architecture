@@ -7,11 +7,12 @@ concurrency:
 on:
   push:
     paths:
-      - 'iac-template/terraform-hcl-standard/aws-cloud/bootstrap-s3/**'
-      - 'iac-template/terraform-hcl-standard/aws-cloud/bootstrap-iam/**'
-      - 'iac-template/terraform-hcl-standard/aws-cloud/bootstrap-dynamodb/**'
+      - 'iac-template/terraform-hcl-standard/aws-cloud/bootstrap/**'
       - '.github/workflows/terraform-standard-iac-pipeline-aws-global-bootstrap.yaml'
   pull_request:
+    paths:
+      - 'iac-template/terraform-hcl-standard/aws-cloud/bootstrap/**'
+      - '.github/workflows/terraform-standard-iac-pipeline-aws-global-bootstrap.yaml'
   workflow_dispatch:
     inputs:
       deploy_action:
@@ -30,7 +31,7 @@ jobs:
 
     strategy:
       matrix:
-        target: [bootstrap-dynamodb, bootstrap-s3, bootstrap-iam]
+        target: [bootstrap/state/, bootstrap/lock, bootstrap/identity]
 
     steps:
       - uses: actions/checkout@v4
@@ -64,6 +65,20 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_BOOTSTRAP_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-1
 
+      - name: Init
+        working-directory: ${{ env.TF_WORKDIR }}/${{ matrix.target }}
+        run: make init
+
+      - name: Plan
+        if: env.DEPLOY_ACTION == 'plan'
+        working-directory: ${{ env.TF_WORKDIR }}/${{ matrix.target }}
+        run: make plan
+
+      - name: Apply
+        if: env.DEPLOY_ACTION == 'apply'
+        working-directory: ${{ env.TF_WORKDIR }}/${{ matrix.target }}
+        run: make apply
+
       - name: Load bootstrap config for destroy
         if: env.DEPLOY_ACTION == 'destroy'
         run: |
@@ -87,20 +102,6 @@ jobs:
               + f"BOOTSTRAP_TERRAFORM_USER={cfg['iam']['terraform_user_name']}\n"
           )
           PY
-
-      - name: Init
-        working-directory: ${{ env.TF_WORKDIR }}/${{ matrix.target }}
-        run: make init
-
-      - name: Plan
-        if: env.DEPLOY_ACTION == 'plan'
-        working-directory: ${{ env.TF_WORKDIR }}/${{ matrix.target }}
-        run: make plan
-
-      - name: Apply
-        if: env.DEPLOY_ACTION == 'apply'
-        working-directory: ${{ env.TF_WORKDIR }}/${{ matrix.target }}
-        run: make apply
 
       - name: Destroy
         if: env.DEPLOY_ACTION == 'destroy'
