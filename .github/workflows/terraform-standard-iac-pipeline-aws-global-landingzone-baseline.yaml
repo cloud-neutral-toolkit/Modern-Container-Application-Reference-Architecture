@@ -48,6 +48,7 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
           role-to-assume: ${{ env.AWS_ROLE_ARN }}
           role-session-name: github-actions
+          role-skip-session-tagging: true
 
       - name: Terraform Init (LandingZone)
         working-directory: ${{ env.TF_WORKDIR }}/envs/dev-landingzone

@@ -49,6 +49,7 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
           role-to-assume: ${{ env.AWS_ROLE_ARN }}
           role-session-name: github-actions
+          role-skip-session-tagging: true
 
       - name: Init
         working-directory: ${{ env.BASE_DIR }}/${{ matrix.component }}
