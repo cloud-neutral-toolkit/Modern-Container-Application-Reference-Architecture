@@ -2,7 +2,9 @@
 # IAM Role: Terraform Deploy Role
 # ----------------------------------------
 resource "aws_iam_role" "terraform_deploy_role" {
-  name = local.config_role_name
+  count = var.create_role ? 1 : 0
+
+  name = local.role_name
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -28,7 +30,9 @@ resource "aws_iam_role" "terraform_deploy_role" {
 # 可选：当前阶段保持你原来的 Admin full access
 # （未来你可以把它缩到最小权限）
 resource "aws_iam_role_policy_attachment" "attach_admin" {
-  role       = aws_iam_role.terraform_deploy_role.name
+  count = var.create_role ? 1 : 0
+
+  role       = aws_iam_role.terraform_deploy_role[0].name
   policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
 }
 
@@ -36,15 +40,19 @@ resource "aws_iam_role_policy_attachment" "attach_admin" {
 # IAM User for Terraform (AK/SK)
 # ----------------------------------------
 resource "aws_iam_user" "terraform_user" {
-  name = local.config_terraform_user
+  count = var.create_user ? 1 : 0
+
+  name = local.terraform_user_name
 }
 
 #
 # IAM User Policy: 最小权限
 # ----------------------------------------
 resource "aws_iam_user_policy" "terraform_user_policy" {
-  name = "${local.config_terraform_user}-iac-policy"
-  user = aws_iam_user.terraform_user.name
+  count = var.create_user ? 1 : 0
+
+  name = "${local.terraform_user_name}-iac-policy"
+  user = aws_iam_user.terraform_user[0].name
 
   policy = jsonencode({
     Version = "2012-10-17",
@@ -55,7 +63,7 @@ resource "aws_iam_user_policy" "terraform_user_policy" {
         Action = [
           "sts:AssumeRole"
         ],
-        Resource = aws_iam_role.terraform_deploy_role.arn
+        Resource = var.create_role ? aws_iam_role.terraform_deploy_role[0].arn : var.existing_role_arn
       },
 
       # S3: Terraform state bucket
