@@ -13,6 +13,10 @@ on:
         options: [plan, apply, destroy]
         default: plan
 
+permissions:
+  id-token: write
+  contents: read
+
 env:
   BASE_DIR: iac-template/terraform-hcl-standard/aws-cloud/component/
   DEPLOY_ACTION: ${{ github.event.inputs.deploy_action || 'plan' }}
