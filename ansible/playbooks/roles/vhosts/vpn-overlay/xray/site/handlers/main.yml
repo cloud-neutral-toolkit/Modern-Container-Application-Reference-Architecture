@@ -1,6 +1,0 @@
----
-- name: Restart Xray-client service
-  systemd:
-    name: xray-client.service
-    state: restarted
-    enabled: yes

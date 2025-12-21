@@ -1,6 +1,0 @@
----
-- name: Restart xray service
-  systemd:
-    name: xray.service
-    state: restarted
-    enabled: yes
