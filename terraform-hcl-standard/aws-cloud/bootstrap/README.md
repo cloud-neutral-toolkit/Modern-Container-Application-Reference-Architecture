@@ -21,7 +21,7 @@ Terragrunt `run-all` handles the ordering; no manual sequencing is required.
 
 - **Data plane**: S3 bucket enforces AES256 SSE, public access block, and versioning. DynamoDB enables server-side encryption and PITR for forensic recovery.
 - **Control plane**: IAM policies are externalized in `identity/policies/*.json` and rendered via `aws_iam_policy_document` to keep Terraform code lean and auditable.
-- **Config source of truth**: `config/accounts/bootstrap.yaml` defines canonical names, regions, and tags. Terragrunt passes outputs between modules to avoid drift.
+- **Config source of truth**: The GitOps repo (`https://github.com/cloud-neutral-workshop/gitops.git`) stores `config/accounts/bootstrap.yaml`, defining canonical names, regions, and tags. Terragrunt reads it via `GITOPS_REPO_ROOT` (defaults to `../gitops` relative to this repo).
 
 ## How to Run with Terragrunt
 

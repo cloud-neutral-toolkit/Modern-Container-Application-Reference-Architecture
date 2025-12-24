@@ -38,14 +38,14 @@ jobs:
         run: echo "TF_VAR_vultr_api_key=${{ secrets.VULTR_API_KEY }}" >> "$GITHUB_ENV"
 
       - name: Terraform Init
-        run: terraform -chdir=$TF_ROOT init
+        run: terraform -chdir="$TF_ROOT" init
 
       - name: Terraform ${{ env.DEPLOY_ACTION }}
-        run: terraform -chdir=$TF_ROOT $DEPLOY_ACTION -input=false
+        run: terraform -chdir="$TF_ROOT" "$DEPLOY_ACTION" -input=false
 
       - name: Capture LandingZone outputs
         if: env.DEPLOY_ACTION == 'apply'
-        run: terraform -chdir=$TF_ROOT output -json > landingzone-baseline-outputs.json
+        run: terraform -chdir="$TF_ROOT" output -json > landingzone-baseline-outputs.json
 
       - name: Upload LandingZone outputs
         if: env.DEPLOY_ACTION == 'apply'

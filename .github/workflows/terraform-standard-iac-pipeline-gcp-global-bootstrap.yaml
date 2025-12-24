@@ -135,9 +135,9 @@ jobs:
           set -euo pipefail
 
           if [ "$TARGET" = "bootstrap-gcs" ]; then
-            if gcloud storage buckets describe gs://${BOOTSTRAP_BUCKET_NAME} >/dev/null 2>&1; then
-              gcloud storage rm --recursive gs://${BOOTSTRAP_BUCKET_NAME} || true
-              gcloud storage buckets delete gs://${BOOTSTRAP_BUCKET_NAME} --quiet || true
+            if gcloud storage buckets describe "gs://${BOOTSTRAP_BUCKET_NAME}" >/dev/null 2>&1; then
+              gcloud storage rm --recursive "gs://${BOOTSTRAP_BUCKET_NAME}" || true
+              gcloud storage buckets delete "gs://${BOOTSTRAP_BUCKET_NAME}" --quiet || true
             else
               echo "Bucket gs://${BOOTSTRAP_BUCKET_NAME} does not exist; skipping deletion."
             fi
@@ -179,9 +179,10 @@ jobs:
           echo "{" > final_bootstrap_outputs.json
           f=true
           for x in outputs/**/outputs_*.json; do
-            k=$(basename $x .json | sed 's/outputs_//')
+            k=$(basename "$x" .json | sed 's/outputs_//')
             [ "$f" = true ] && f=false || echo "," >> final_bootstrap_outputs.json
-            echo "\"$k\": $(cat $x)" >> final_bootstrap_outputs.json
+            value=$(cat "$x")
+            echo "\"$k\": $value" >> final_bootstrap_outputs.json
           done
           echo "}" >> final_bootstrap_outputs.json
 

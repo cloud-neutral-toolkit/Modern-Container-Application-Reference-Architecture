@@ -32,7 +32,7 @@ jobs:
             echo "🔍 Checking workflow: $WF"
 
             RUN=$(gh api \
-              repos/$REPO/actions/workflows/$WF/runs \
+              "repos/$REPO/actions/workflows/$WF/runs" \
               -F branch="$BRANCH" \
               -F per_page=1 \
               --jq '.workflow_runs[0]')

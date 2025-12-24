@@ -51,11 +51,13 @@ jobs:
 
       - name: Export Alicloud credentials and variables
         run: |
-          echo "ALICLOUD_ACCESS_KEY=${{ secrets.ALICLOUD_ACCESS_KEY }}" >> "$GITHUB_ENV"
-          echo "ALICLOUD_SECRET_KEY=${{ secrets.ALICLOUD_SECRET_KEY }}" >> "$GITHUB_ENV"
-          echo "ALICLOUD_REGION=${ALICLOUD_REGION:-cn-hangzhou}" >> "$GITHUB_ENV"
-          echo "TF_VAR_state_bucket=${{ secrets.ALICLOUD_STATE_BUCKET }}" >> "$GITHUB_ENV"
-          echo "TF_VAR_account_id=${{ secrets.ALICLOUD_ACCOUNT_ID }}" >> "$GITHUB_ENV"
+          {
+            echo "ALICLOUD_ACCESS_KEY=${{ secrets.ALICLOUD_ACCESS_KEY }}"
+            echo "ALICLOUD_SECRET_KEY=${{ secrets.ALICLOUD_SECRET_KEY }}"
+            echo "ALICLOUD_REGION=${ALICLOUD_REGION:-cn-hangzhou}"
+            echo "TF_VAR_state_bucket=${{ secrets.ALICLOUD_STATE_BUCKET }}"
+            echo "TF_VAR_account_id=${{ secrets.ALICLOUD_ACCOUNT_ID }}"
+          } >> "$GITHUB_ENV"
 
       - name: Terraform Init
         run: terraform -chdir=${{ env.TF_WORKDIR }}/${{ matrix.target }} init -upgrade
@@ -101,9 +103,10 @@ jobs:
           echo "{" > final_bootstrap_outputs.json
           f=true
           for x in outputs/**/outputs_*.json; do
-            k=$(basename $x .json | sed 's/outputs_//')
+            k=$(basename "$x" .json | sed 's/outputs_//')
+            value=$(cat "$x")
             [ "$f" = true ] && f=false || echo "," >> final_bootstrap_outputs.json
-            echo "\"$k\": $(cat $x)" >> final_bootstrap_outputs.json
+            echo "\"$k\": $value" >> final_bootstrap_outputs.json
           done
           echo "}" >> final_bootstrap_outputs.json
 

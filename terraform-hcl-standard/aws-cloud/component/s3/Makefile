@@ -1,6 +1,10 @@
+CONFIG_ROOT ?= ../../../../../gitops
+CONFIG_DIR ?= $(CONFIG_ROOT)/config
+export TF_VAR_config_root ?= $(CONFIG_ROOT)
+
 render:
 	python ../../../utils/render_provider_backend.py \
-		--config-dir ../../config \
+		--config-dir $(CONFIG_DIR) \
 		--template-dir ../../templates \
 		--component-dir .. \
 		--component s3

@@ -15,6 +15,22 @@ Both modules can be run independently.
 ---
 ** Note: S3 bucket must be emptied before deletion. **
 
+## Config Source of Truth (GitOps)
+
+All AWS config YAML now lives in the external GitOps repo:
+
+```
+https://github.com/cloud-neutral-workshop/gitops.git
+```
+
+Clone it next to this repo (default path used in Terraform), or override with
+`TF_VAR_config_root`:
+
+```
+git clone https://github.com/cloud-neutral-workshop/gitops.git ../gitops
+export TF_VAR_config_root="$(cd ../gitops && pwd)"
+```
+
 ## 1. AWS Credentials Setup
 
 Terraform reads AWS credentials through the standard AWS credential chain. You may use either A or B.
@@ -143,10 +159,10 @@ To remove bootstrap resources:
 
 terraform destroy
 
-Resource names (bucket, DynamoDB table, IAM role/user) are defined in config/accounts/bootstrap.yaml. When tearing down the S3 backend, empty the configured bucket with AWS CLI first:
+Resource names (bucket, DynamoDB table, IAM role/user) are defined in the GitOps repo at `config/accounts/bootstrap.yaml`. When tearing down the S3 backend, empty the configured bucket with AWS CLI first:
 
 ```
-aws s3 rb "s3://$(python -c "import yaml;print(yaml.safe_load(open('config/accounts/bootstrap.yaml'))['state']['bucket_name'])")" --force
+aws s3 rb "s3://$(python -c "import os,yaml;root=os.environ.get('TF_VAR_config_root','../gitops');print(yaml.safe_load(open(f'{root}/config/accounts/bootstrap.yaml'))['state']['bucket_name'])")" --force
 ```
 
 
@@ -161,4 +177,3 @@ Terraform 读取你的 Access Key
 Terraform 使用临时凭证执行所有资源创建
 
 AccessKey → STS → AssumeRole → 临时 Token → Terraform apply
-

@@ -4,7 +4,6 @@ on:
   push:
   pull_request:
     paths:
-    paths:
       - '.github/workflows/iac-pipeline-aws-resources-matrix.yaml'
       - 'terraform-hcl-standard/aws-cloud/component/ec2/**'
       - 'terraform-hcl-standard/aws-cloud/component/s3/**'

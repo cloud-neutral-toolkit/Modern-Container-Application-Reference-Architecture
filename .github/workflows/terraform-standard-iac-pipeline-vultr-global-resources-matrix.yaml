@@ -53,17 +53,17 @@ jobs:
         env:
           TF_VAR_region: ${{ matrix.region }}
           TF_VAR_instance_type: ${{ matrix.instance_type }}
-        run: terraform -chdir=$TF_WORKDIR init
+        run: terraform -chdir="$TF_WORKDIR" init
 
       - name: Terraform ${{ env.DEPLOY_ACTION }}
         env:
           TF_VAR_region: ${{ matrix.region }}
           TF_VAR_instance_type: ${{ matrix.instance_type }}
-        run: terraform -chdir=$TF_WORKDIR $DEPLOY_ACTION -input=false
+        run: terraform -chdir="$TF_WORKDIR" "$DEPLOY_ACTION" -input=false
 
       - name: Capture resource outputs
         if: env.DEPLOY_ACTION == 'apply'
-        run: terraform -chdir=$TF_WORKDIR output -json > vultr-resources-${{ matrix.environment }}-${{ matrix.region }}-${{ matrix.instance_type }}.json
+        run: terraform -chdir="$TF_WORKDIR" output -json > vultr-resources-${{ matrix.environment }}-${{ matrix.region }}-${{ matrix.instance_type }}.json
 
       - name: Upload resource outputs
         if: env.DEPLOY_ACTION == 'apply'

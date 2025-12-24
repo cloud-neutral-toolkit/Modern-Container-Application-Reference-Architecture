@@ -4,10 +4,9 @@ on:
   push:
   pull_request:
     paths:
-    paths:
       - 'terraform-hcl-standard/aws-cloud/**'
+      - 'iac-template/terraform-hcl-standard/aws-cloud/**'
       - '.github/workflows/iac-pipeline-aws-global-landingzone-baseline.yaml'
-  pull_request:
     branches: [main]
   workflow_dispatch:
     inputs:

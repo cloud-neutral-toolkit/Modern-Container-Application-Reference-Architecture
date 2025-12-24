@@ -1,6 +1,8 @@
 locals {
+  config_root = coalesce(var.config_root, abspath("${path.root}/../../../../../gitops"))
+
   account = yamldecode(
-    file("${path.root}/../../config/accounts/dev-landingzone.yaml")
+    file("${local.config_root}/config/accounts/dev-landingzone.yaml")
   )
 }
 

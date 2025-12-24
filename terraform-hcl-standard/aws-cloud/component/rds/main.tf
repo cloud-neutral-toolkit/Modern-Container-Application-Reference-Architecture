@@ -1,11 +1,13 @@
 
 locals {
+  config_root = coalesce(var.config_root, abspath("${path.root}/../../../../../gitops"))
+
   account = yamldecode(
-    file("${path.root}/../../config/accounts/dev.yaml")
+    file("${local.config_root}/config/accounts/dev.yaml")
   )
 
   rds_conf = yamldecode(
-    file("${path.root}/../../config/resources/dev-rds/rds.yaml")
+    file("${local.config_root}/config/resources/dev-rds/rds.yaml")
   )
 }
 
@@ -33,4 +35,3 @@ module "rds" {
 
   tags = merge(local.account.tags, local.rds_conf.tags)
 }
-

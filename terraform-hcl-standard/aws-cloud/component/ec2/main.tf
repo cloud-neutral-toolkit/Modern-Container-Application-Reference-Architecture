@@ -1,6 +1,8 @@
 locals {
-  account  = yamldecode(file("${path.root}/../../config/accounts/dev.yaml"))
-  ec2_conf = yamldecode(file("${path.root}/../../config/resources/ec2/dev.yaml"))
+  config_root = coalesce(var.config_root, abspath("${path.root}/../../../../../gitops"))
+
+  account  = yamldecode(file("${local.config_root}/config/accounts/dev.yaml"))
+  ec2_conf = yamldecode(file("${local.config_root}/config/resources/ec2/dev.yaml"))
 }
 
 module "ami_lookup" {

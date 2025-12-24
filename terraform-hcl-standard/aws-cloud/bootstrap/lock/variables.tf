@@ -13,5 +13,11 @@ variable "region" {
 variable "bootstrap_config_path" {
   description = "Path to the bootstrap account configuration YAML"
   type        = string
-  default     = "../../config/accounts/bootstrap.yaml"
+  default     = null
+}
+
+variable "config_root" {
+  description = "Local path to the gitops repository root."
+  type        = string
+  default     = null
 }

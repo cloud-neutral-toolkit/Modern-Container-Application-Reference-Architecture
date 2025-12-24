@@ -45,7 +45,7 @@ jobs:
         run: echo "TF_WORKDIR=${TF_ROOT}/${{ matrix.target }}" >> "$GITHUB_ENV"
 
       - name: Terraform Init
-        run: terraform -chdir=$TF_WORKDIR init
+        run: terraform -chdir="$TF_WORKDIR" init
 
       - name: Terraform ${{ env.DEPLOY_ACTION }}
-        run: terraform -chdir=$TF_WORKDIR $DEPLOY_ACTION -input=false
+        run: terraform -chdir="$TF_WORKDIR" "$DEPLOY_ACTION" -input=false

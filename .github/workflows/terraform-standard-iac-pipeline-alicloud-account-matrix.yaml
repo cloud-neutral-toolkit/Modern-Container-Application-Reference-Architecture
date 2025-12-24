@@ -42,11 +42,13 @@ jobs:
 
       - name: Export Alicloud credentials
         run: |
-          echo "ALICLOUD_ACCESS_KEY=${{ secrets.ALICLOUD_ACCESS_KEY }}" >> "$GITHUB_ENV"
-          echo "ALICLOUD_SECRET_KEY=${{ secrets.ALICLOUD_SECRET_KEY }}" >> "$GITHUB_ENV"
-          echo "ALICLOUD_REGION=${ALICLOUD_REGION:-cn-hangzhou}" >> "$GITHUB_ENV"
-          echo "TF_VAR_rds_password=${{ secrets.ALICLOUD_RDS_PASSWORD }}" >> "$GITHUB_ENV"
-          echo "TF_VAR_redis_password=${{ secrets.ALICLOUD_REDIS_PASSWORD }}" >> "$GITHUB_ENV"
+          {
+            echo "ALICLOUD_ACCESS_KEY=${{ secrets.ALICLOUD_ACCESS_KEY }}"
+            echo "ALICLOUD_SECRET_KEY=${{ secrets.ALICLOUD_SECRET_KEY }}"
+            echo "ALICLOUD_REGION=${ALICLOUD_REGION:-cn-hangzhou}"
+            echo "TF_VAR_rds_password=${{ secrets.ALICLOUD_RDS_PASSWORD }}"
+            echo "TF_VAR_redis_password=${{ secrets.ALICLOUD_REDIS_PASSWORD }}"
+          } >> "$GITHUB_ENV"
 
       - name: Init
         run: terraform -chdir=${{ env.BASE_DIR }}/${{ matrix.env }} init -upgrade

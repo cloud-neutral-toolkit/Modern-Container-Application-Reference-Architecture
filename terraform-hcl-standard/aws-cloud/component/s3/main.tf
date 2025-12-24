@@ -1,10 +1,12 @@
 locals {
+  config_root = coalesce(var.config_root, abspath("${path.root}/../../../../../gitops"))
+
   account = yamldecode(
-    file("${path.root}/../../config/accounts/dev.yaml")
+    file("${local.config_root}/config/accounts/dev.yaml")
   )
 
   s3_conf = yamldecode(
-    file("${path.root}/../../config/resources/dev-object/bucket.yaml")
+    file("${local.config_root}/config/resources/dev-object/bucket.yaml")
   )
 }
 
@@ -15,4 +17,3 @@ module "s3" {
   enable_versioning = local.s3_conf.enable_versioning
   tags              = local.account.tags
 }
-

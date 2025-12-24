@@ -1,6 +1,8 @@
 locals {
-  account = yamldecode(file("${path.root}/../../config/accounts/dev.yaml"))
-  redis   = yamldecode(file("${path.root}/../../config/resources/dev-redis/redis.yaml"))
+  config_root = coalesce(var.config_root, abspath("${path.root}/../../../../../gitops"))
+
+  account = yamldecode(file("${local.config_root}/config/accounts/dev.yaml"))
+  redis   = yamldecode(file("${local.config_root}/config/resources/dev-redis/redis.yaml"))
 }
 
 module "redis" {
@@ -14,4 +16,3 @@ module "redis" {
   security_group_ids = local.redis.security_group_ids
   tags               = local.account.tags
 }
-
