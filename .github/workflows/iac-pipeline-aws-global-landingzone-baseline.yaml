@@ -47,10 +47,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Normalize GitOps repo
+        id: gitops_repo
+        shell: bash
+        run: |
+          repo_input="${{ github.event.inputs.gitops_repo_name || 'https://github.com/cloud-neutral-workshop/gitops.git' }}"
+          repo="${repo_input#https://github.com/}"
+          repo="${repo%.git}"
+          echo "repo=$repo" >> "$GITHUB_OUTPUT"
+
       - name: Checkout GitOps config
         uses: actions/checkout@v4
         with:
-          repository: ${{ replace(replace(github.event.inputs.gitops_repo_name || 'https://github.com/cloud-neutral-workshop/gitops.git', 'https://github.com/', ''), '.git', '') }}
+          repository: ${{ steps.gitops_repo.outputs.repo }}
           path: ${{ env.GITOPS_REPO_ROOT }}
           ref: ${{ github.event.inputs.gitops_repo_ref || 'main' }}
 
