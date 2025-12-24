@@ -15,7 +15,7 @@ variable "bootstrap_config_path" {
   type        = string
 
   validation {
-    condition     = var.bootstrap_config_path != null && trim(var.bootstrap_config_path) != ""
+    condition     = var.bootstrap_config_path != null && trimspace(var.bootstrap_config_path) != ""
     error_message = "Set bootstrap_config_path to the GitHub Action environment input that points to the bootstrap YAML file."
   }
 }
