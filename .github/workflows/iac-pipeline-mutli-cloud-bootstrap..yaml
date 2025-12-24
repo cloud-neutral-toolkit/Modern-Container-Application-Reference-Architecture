@@ -8,8 +8,8 @@ on:
   push:
   pull_request:
     paths:
-      - '.github/workflows/iac-pipeline-mutli-cloud-bootstrap.yaml'
       - 'terraform-hcl-standard/**'
+      - '.github/workflows/iac-pipeline-mutli-cloud-bootstrap.yaml'
   workflow_dispatch:
     inputs:
       deploy_action:

@@ -1,11 +1,10 @@
-name: AWS Cloud IAC Pipeline (Account/VPC Matrix)
+name: Multi Cloud IAC Pipeline (Account/VPC Matrix)
 
 on:
   push:
   pull_request:
     paths:
-      - 'terraform-hcl-standard/aws-cloud/component/vpc/**'
-      - 'terraform-hcl-standard/aws-cloud/component/role/**'
+      - 'terraform-hcl-standard/**'
       - '.github/workflows/iac-pipeline-aws-account-matrix.yaml'
   workflow_dispatch:
     inputs:
