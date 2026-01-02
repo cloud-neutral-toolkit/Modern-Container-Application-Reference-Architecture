@@ -84,7 +84,15 @@ jobs:
       - name: Force Destroy Bootstrap Resources
         if: env.DEPLOY_ACTION == 'destroy'
         run: |
-          ./scripts/aws-bootstrap-force-destroy.sh
+          CLOUD_ROOT=$(dirname ${{ env.TG_ROOT }})
+          DESTROY_SCRIPT="${CLOUD_ROOT}/modules/bootstrap-destroy/destroy.sh"
+          if [ -f "$DESTROY_SCRIPT" ]; then
+            chmod +x "$DESTROY_SCRIPT"
+            "$DESTROY_SCRIPT"
+          else
+            echo "No destroy script found at $DESTROY_SCRIPT"
+            exit 1
+          fi
 
       - name: Terragrunt Plan
         if: env.DEPLOY_ACTION == 'plan'
